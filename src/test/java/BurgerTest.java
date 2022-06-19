@@ -6,6 +6,7 @@ import praktikum.Ingredient;
 import praktikum.IngredientType;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 public class BurgerTest {
 
@@ -30,5 +31,17 @@ public class BurgerTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void removeIngredientIsRemoved() {
+        Burger burger = new Burger();
+        Ingredient testIngredient = new Ingredient(IngredientType.SAUCE, "test sauce", 50);
+        Ingredient testIngredient2 = new Ingredient(IngredientType.FILLING, "test filling", 50);
+        Ingredient expected = testIngredient2;
+        burger.addIngredient(testIngredient);
+        burger.addIngredient(testIngredient2);
+        burger.removeIngredient(burger.ingredients.size() - 1);
+        Ingredient actual = burger.ingredients.get(burger.ingredients.size() - 1);
+        assertNotEquals(expected, actual);
+    }
 
 }
