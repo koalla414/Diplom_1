@@ -2,6 +2,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import praktikum.Bun;
 import praktikum.Burger;
+import praktikum.Ingredient;
+import praktikum.IngredientType;
 
 import static org.junit.Assert.assertEquals;
 
@@ -18,7 +20,15 @@ public class BurgerTest {
         assertEquals(expected, actual);
     }
 
-//    @Test
+    @Test
+    public void addIngredientIsAdded() {
+        Burger burger = new Burger();
+        Ingredient testIngredient = new Ingredient(IngredientType.SAUCE, "test sauce", 50);
+        Ingredient expected = testIngredient;
+        burger.addIngredient(testIngredient);
+        Ingredient actual = burger.ingredients.get(burger.ingredients.size() - 1);
+        assertEquals(expected, actual);
+    }
 
 
 }
