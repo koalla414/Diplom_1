@@ -44,4 +44,17 @@ public class BurgerTest {
         assertNotEquals(expected, actual);
     }
 
+    @Test
+    public void moveIngredientIsMoved() {
+        Burger burger = new Burger();
+        Ingredient testIngredient = new Ingredient(IngredientType.SAUCE, "test sauce", 50);
+        Ingredient testIngredient2 = new Ingredient(IngredientType.FILLING, "test filling", 50);
+        Ingredient expected = testIngredient2;
+        burger.addIngredient(testIngredient);
+        burger.addIngredient(testIngredient2);
+        burger.moveIngredient((burger.ingredients.size() - 1), (burger.ingredients.size() - 2));
+        Ingredient actual = burger.ingredients.get(burger.ingredients.size() - 2);
+        assertEquals(expected, actual);
+    }
+
 }
