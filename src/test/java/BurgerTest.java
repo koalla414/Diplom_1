@@ -1,5 +1,9 @@
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 import praktikum.Bun;
 import praktikum.Burger;
 import praktikum.Ingredient;
@@ -8,9 +12,9 @@ import praktikum.IngredientType;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
+@RunWith(MockitoJUnitRunner.class)
 public class BurgerTest {
 
-//    Замоккать этот тест?
     @Test
     public void setBunsIsBun() {
         Burger burger = new Burger();
@@ -55,6 +59,28 @@ public class BurgerTest {
         burger.moveIngredient((burger.ingredients.size() - 1), (burger.ingredients.size() - 2));
         Ingredient actual = burger.ingredients.get(burger.ingredients.size() - 2);
         assertEquals(expected, actual);
+    }
+
+    @Mock
+    Bun bun;
+
+    @Mock
+    Ingredient ingredient;
+
+    @Test
+    public void getPriceIsPrice() {
+        Burger burger = new Burger();
+
+        Mockito.when(bun.getPrice()).thenReturn(50F);
+        Bun bun = new Bun("test bun", 50);
+        burger.setBuns(bun);
+
+        Mockito.when(ingredient.getPrice()).thenReturn(30F);
+        Ingredient ingredient = new Ingredient(IngredientType.SAUCE, "test sauce", 30);
+        burger.addIngredient(ingredient);
+
+        float actual = burger.getPrice();
+        assertEquals(130, actual, 0);
     }
 
 }
