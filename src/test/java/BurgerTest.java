@@ -1,4 +1,3 @@
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -62,25 +61,43 @@ public class BurgerTest {
     }
 
     @Mock
-    Bun bun;
+    Bun mockBun;
 
     @Mock
-    Ingredient ingredient;
+    Ingredient mockIngredient;
 
     @Test
     public void getPriceIsPrice() {
         Burger burger = new Burger();
 
-        Mockito.when(bun.getPrice()).thenReturn(50F);
-        Bun bun = new Bun("test bun", 50);
-        burger.setBuns(bun);
+        Mockito.when(mockBun.getPrice()).thenReturn(Float.valueOf(50));
+        burger.setBuns(mockBun);
 
-        Mockito.when(ingredient.getPrice()).thenReturn(30F);
-        Ingredient ingredient = new Ingredient(IngredientType.SAUCE, "test sauce", 30);
-        burger.addIngredient(ingredient);
+        Mockito.when(mockIngredient.getPrice()).thenReturn(Float.valueOf(30));
+        burger.addIngredient(mockIngredient);
 
         float actual = burger.getPrice();
         assertEquals(130, actual, 0);
+    }
+
+    @Test
+    public void getReceiptIsReceipt() {
+        Burger burger = new Burger();
+        Bun testBun = new Bun("test bun", 50);
+        Ingredient testIngredient = new Ingredient(IngredientType.SAUCE, "test sauce", 30);
+        Ingredient testIngredient2 = new Ingredient(IngredientType.FILLING, "test filling", 40);
+        burger.setBuns(testBun);
+        burger.addIngredient(testIngredient);
+        burger.addIngredient(testIngredient2);
+
+        String expected = "(==== test bun ====)\r\n" +
+                "= sauce test sauce =\r\n" +
+                "= filling test filling =\r\n" +
+                "(==== test bun ====)\r\n" +
+                "\r\n" +
+                "Price: 170,000000\r\n";
+        String actual = burger.getReceipt();
+        assertEquals(expected, actual);
     }
 
 }
