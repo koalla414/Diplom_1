@@ -25,6 +25,20 @@ public class BurgerTest {
     }
 
     @Test
+    public void choosingSevelalBunsIsSetPastBun() {
+        Burger burger = new Burger();
+        Bun testBun1 = new Bun("test bun 1", 30);
+        Bun testBun2 = new Bun("test bun 2", 50);
+        Bun testBun3 = new Bun("test bun 3", 20);
+        Bun expected = testBun3;
+        burger.setBuns(testBun1);
+        burger.setBuns(testBun2);
+        burger.setBuns(testBun3);
+        Bun actual = burger.bun;
+        assertEquals(expected, actual);
+    }
+
+    @Test
     public void addIngredientIsAdded() {
         Burger burger = new Burger();
         Ingredient testIngredient = new Ingredient(IngredientType.SAUCE, "test sauce", 50);
