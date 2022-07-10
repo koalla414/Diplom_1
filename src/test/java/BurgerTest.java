@@ -13,27 +13,33 @@ import static org.junit.Assert.assertNotEquals;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BurgerTest {
+    @Mock
+    Bun mockBun;
+    @Mock
+    Bun mockBun1;
+    @Mock
+    Bun mockBun2;
+    @Mock
+    Ingredient mockIngredient;
+    @Mock
+    Ingredient mockIngredient1;
 
     @Test
     public void setBunsIsBun() {
         Burger burger = new Burger();
-        Bun testBun = new Bun("test bun", 50);
-        Bun expected = testBun;
-        burger.setBuns(testBun);
+        burger.setBuns(mockBun);
+        Bun expected = mockBun;
         Bun actual = burger.bun;
         assertEquals(expected, actual);
     }
 
     @Test
-    public void choosingSevelalBunsIsSetPastBun() {
+    public void choosingSeveralBunsIsSetPastBun() {
         Burger burger = new Burger();
-        Bun testBun1 = new Bun("test bun 1", 30);
-        Bun testBun2 = new Bun("test bun 2", 50);
-        Bun testBun3 = new Bun("test bun 3", 20);
-        Bun expected = testBun3;
-        burger.setBuns(testBun1);
-        burger.setBuns(testBun2);
-        burger.setBuns(testBun3);
+        Bun expected = mockBun2;
+        burger.setBuns(mockBun);
+        burger.setBuns(mockBun1);
+        burger.setBuns(mockBun2);
         Bun actual = burger.bun;
         assertEquals(expected, actual);
     }
@@ -41,21 +47,18 @@ public class BurgerTest {
     @Test
     public void addIngredientIsAdded() {
         Burger burger = new Burger();
-        Ingredient testIngredient = new Ingredient(IngredientType.SAUCE, "test sauce", 50);
-        Ingredient expected = testIngredient;
-        burger.addIngredient(testIngredient);
+        Ingredient expected = mockIngredient;
+        burger.addIngredient(mockIngredient);
         Ingredient actual = burger.ingredients.get(burger.ingredients.size() - 1);
         assertEquals(expected, actual);
-    }
+}
 
     @Test
     public void removeIngredientIsRemoved() {
         Burger burger = new Burger();
-        Ingredient testIngredient = new Ingredient(IngredientType.SAUCE, "test sauce", 50);
-        Ingredient testIngredient2 = new Ingredient(IngredientType.FILLING, "test filling", 50);
-        Ingredient expected = testIngredient2;
-        burger.addIngredient(testIngredient);
-        burger.addIngredient(testIngredient2);
+        Ingredient expected = mockIngredient1;
+        burger.addIngredient(mockIngredient);
+        burger.addIngredient(mockIngredient1);
         burger.removeIngredient(burger.ingredients.size() - 1);
         Ingredient actual = burger.ingredients.get(burger.ingredients.size() - 1);
         assertNotEquals(expected, actual);
@@ -64,32 +67,21 @@ public class BurgerTest {
     @Test
     public void moveIngredientIsMoved() {
         Burger burger = new Burger();
-        Ingredient testIngredient = new Ingredient(IngredientType.SAUCE, "test sauce", 50);
-        Ingredient testIngredient2 = new Ingredient(IngredientType.FILLING, "test filling", 50);
-        Ingredient expected = testIngredient2;
-        burger.addIngredient(testIngredient);
-        burger.addIngredient(testIngredient2);
+        Ingredient expected = mockIngredient1;
+        burger.addIngredient(mockIngredient);
+        burger.addIngredient(mockIngredient1);
         burger.moveIngredient((burger.ingredients.size() - 1), (burger.ingredients.size() - 2));
         Ingredient actual = burger.ingredients.get(burger.ingredients.size() - 2);
         assertEquals(expected, actual);
     }
 
-    @Mock
-    Bun mockBun;
-
-    @Mock
-    Ingredient mockIngredient;
-
     @Test
     public void getPriceIsPrice() {
         Burger burger = new Burger();
-
         Mockito.when(mockBun.getPrice()).thenReturn(Float.valueOf(50));
         burger.setBuns(mockBun);
-
         Mockito.when(mockIngredient.getPrice()).thenReturn(Float.valueOf(30));
         burger.addIngredient(mockIngredient);
-
         float actual = burger.getPrice();
         assertEquals(130, actual, 0);
     }
@@ -97,13 +89,17 @@ public class BurgerTest {
     @Test
     public void getReceiptIsReceipt() {
         Burger burger = new Burger();
-        Bun testBun = new Bun("test bun", 50);
-        Ingredient testIngredient = new Ingredient(IngredientType.SAUCE, "test sauce", 30);
-        Ingredient testIngredient2 = new Ingredient(IngredientType.FILLING, "test filling", 40);
-        burger.setBuns(testBun);
-        burger.addIngredient(testIngredient);
-        burger.addIngredient(testIngredient2);
-
+        burger.setBuns(mockBun);
+        burger.addIngredient(mockIngredient);
+        burger.addIngredient(mockIngredient1);
+        Mockito.when(mockBun.getPrice()).thenReturn(Float.valueOf(50));
+        Mockito.when(mockBun.getName()).thenReturn("test bun");
+        Mockito.when(mockIngredient.getPrice()).thenReturn(Float.valueOf(30));
+        Mockito.when(mockIngredient.getType()).thenReturn(IngredientType.valueOf("SAUCE"));
+        Mockito.when(mockIngredient.getName()).thenReturn("test sauce");
+        Mockito.when(mockIngredient1.getPrice()).thenReturn(Float.valueOf(40));
+        Mockito.when(mockIngredient1.getType()).thenReturn(IngredientType.valueOf("FILLING"));
+        Mockito.when(mockIngredient1.getName()).thenReturn(String.format("test filling"));
         String expected = "(==== test bun ====)\r\n" +
                 "= sauce test sauce =\r\n" +
                 "= filling test filling =\r\n" +
@@ -113,5 +109,4 @@ public class BurgerTest {
         String actual = burger.getReceipt();
         assertEquals(expected, actual);
     }
-
 }
